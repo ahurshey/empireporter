@@ -1,0 +1,18 @@
+[package]
+name = "civshare"
+version = "0.1.0"
+edition = "2024"
+license = "GPL-3.0-only"
+
+[dependencies]
+bevy = "0.14.2"
+bevy_egui = "0.28.0"
+image = { version = "0.25.10", default-features = false, features = ["png"] }
+rfd = "0.15.1"
+thiserror = "2.0.9"
+winit = "0.30.13"
+
+[build-dependencies]
+ico = "0.4"
+image = { version = "0.25.10", default-features = false, features = ["png"] }
+winresource = "0.1"
