@@ -1497,20 +1497,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "613afe47fcd5fac7ccf1db93babcb082c5994d996f20b8b159f2ad1658eb5724"
 
 [[package]]
-name = "civshare"
-version = "0.1.0"
-dependencies = [
- "bevy",
- "bevy_egui",
- "ico",
- "image",
- "rfd",
- "thiserror 2.0.18",
- "winit",
- "winresource",
-]
-
-[[package]]
 name = "clang-sys"
 version = "1.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1901,6 +1887,20 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0a6a21708405ea88f63d8309650b4d77431f4bc28fb9d8e6f77d3963b51249e6"
 dependencies = [
  "bytemuck",
+]
+
+[[package]]
+name = "empire-porter"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+ "bevy_egui",
+ "ico",
+ "image",
+ "rfd",
+ "thiserror 2.0.18",
+ "winit",
+ "winresource",
 ]
 
 [[package]]

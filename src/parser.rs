@@ -2,15 +2,15 @@
 //
 // Copyright (C) 2026 Alex Hurshman
 //
-// This file is part of CivShare.
+// This file is part of EmpirePorter.
 //
-// CivShare is free software: you can redistribute it and/or modify it under the
-// terms of the GNU General Public License as published by the Free Software
+// EmpirePorter is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
 // Foundation, version 3 only.
 //
-// CivShare is distributed in the hope that it will be useful, but WITHOUT ANY
-// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-// A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+// EmpirePorter is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 use thiserror::Error;
 

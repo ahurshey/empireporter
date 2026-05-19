@@ -2,15 +2,15 @@
 //
 // Copyright (C) 2026 Alex Hurshman
 //
-// This file is part of CivShare.
+// This file is part of EmpirePorter.
 //
-// CivShare is free software: you can redistribute it and/or modify it under the
-// terms of the GNU General Public License as published by the Free Software
+// EmpirePorter is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
 // Foundation, version 3 only.
 //
-// CivShare is distributed in the hope that it will be useful, but WITHOUT ANY
-// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-// A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+// EmpirePorter is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
@@ -42,7 +42,7 @@ const STELLARIS_DESIGNS_RELATIVE_PATH: &[&str] = &[
     "Stellaris",
     "user_empire_designs_v3.4.txt",
 ];
-const CIVSHARE_EXPORT_FILE_NAME: &str = "civshare_export.txt";
+const EMPIRE_PORTER_EXPORT_FILE_NAME: &str = "empire_porter_export.txt";
 const BASE_EGUI_SCALE: f32 = 0.7;
 const DEFAULT_UI_ZOOM: f32 = 1.0;
 const MIN_UI_ZOOM: f32 = 0.6;
@@ -56,14 +56,14 @@ fn main() {
     App::new()
         .add_plugins(DefaultPlugins.set(WindowPlugin {
             primary_window: Some(Window {
-                title: "CivShare - Stellaris Empire Import/Export".to_owned(),
+                title: "EmpirePorter - Stellaris Empire Import/Export".to_owned(),
                 resolution: WindowResolution::new(1200.0, 800.0),
                 ..default()
             }),
             ..default()
         }))
         .add_plugins(EguiPlugin)
-        .init_resource::<CivShareState>()
+        .init_resource::<EmpirePorterState>()
         .add_systems(
             PreUpdate,
             sync_egui_scale_system
@@ -116,7 +116,7 @@ enum ActiveTab {
 }
 
 #[derive(Resource)]
-struct CivShareState {
+struct EmpirePorterState {
     active_tab: ActiveTab,
     status: String,
     ui_zoom: f32,
@@ -133,7 +133,7 @@ struct CivShareState {
     conflict_policy: ConflictPolicy,
 }
 
-impl Default for CivShareState {
+impl Default for EmpirePorterState {
     fn default() -> Self {
         Self {
             active_tab: ActiveTab::Export,
@@ -157,7 +157,7 @@ impl Default for CivShareState {
 fn ui_system(
     mut contexts: EguiContexts,
     keyboard: Res<ButtonInput<KeyCode>>,
-    mut state: ResMut<CivShareState>,
+    mut state: ResMut<EmpirePorterState>,
 ) {
     let ctx = contexts.ctx_mut();
     configure_readable_ui(ctx, &mut state);
@@ -165,7 +165,7 @@ fn ui_system(
 
     egui::TopBottomPanel::top("top_bar").show(ctx, |ui| {
         ui.horizontal(|ui| {
-            ui.heading(egui::RichText::new("CivShare").size(24.0));
+            ui.heading(egui::RichText::new("EmpirePorter").size(24.0));
             ui.add_space(16.0);
             tab_button(ui, &mut state.active_tab, ActiveTab::Export, "Export");
             ui.add_space(2.0);
@@ -183,7 +183,7 @@ fn ui_system(
                 &state.status
             });
             ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                ui.label(format!("CivShare v{}", env!("CARGO_PKG_VERSION")));
+                ui.label(format!("EmpirePorter v{}", env!("CARGO_PKG_VERSION")));
             });
         });
     });
@@ -194,14 +194,14 @@ fn ui_system(
     });
 }
 
-fn sync_egui_scale_system(state: Res<CivShareState>, mut egui_settings: ResMut<EguiSettings>) {
+fn sync_egui_scale_system(state: Res<EmpirePorterState>, mut egui_settings: ResMut<EguiSettings>) {
     let scale_factor = BASE_EGUI_SCALE * state.ui_zoom.clamp(MIN_UI_ZOOM, MAX_UI_ZOOM);
     if (egui_settings.scale_factor - scale_factor).abs() > f32::EPSILON {
         egui_settings.scale_factor = scale_factor;
     }
 }
 
-fn configure_readable_ui(ctx: &egui::Context, state: &mut CivShareState) {
+fn configure_readable_ui(ctx: &egui::Context, state: &mut EmpirePorterState) {
     if state.style_configured {
         return;
     }
@@ -234,7 +234,7 @@ fn configure_readable_ui(ctx: &egui::Context, state: &mut CivShareState) {
     state.style_configured = true;
 }
 
-fn handle_zoom_shortcuts(keyboard: &ButtonInput<KeyCode>, state: &mut CivShareState) {
+fn handle_zoom_shortcuts(keyboard: &ButtonInput<KeyCode>, state: &mut EmpirePorterState) {
     if keyboard.just_pressed(KeyCode::Minus) || keyboard.just_pressed(KeyCode::NumpadSubtract) {
         adjust_ui_zoom(state, -UI_ZOOM_STEP);
     }
@@ -243,7 +243,7 @@ fn handle_zoom_shortcuts(keyboard: &ButtonInput<KeyCode>, state: &mut CivShareSt
     }
 }
 
-fn adjust_ui_zoom(state: &mut CivShareState, delta: f32) {
+fn adjust_ui_zoom(state: &mut EmpirePorterState, delta: f32) {
     state.ui_zoom = (state.ui_zoom + delta).clamp(MIN_UI_ZOOM, MAX_UI_ZOOM);
     state.status = format!("UI zoom set to {}%", zoom_percent(state.ui_zoom));
 }
@@ -252,7 +252,7 @@ fn zoom_percent(zoom: f32) -> u32 {
     (zoom * 100.0).round() as u32
 }
 
-fn zoom_controls(ui: &mut egui::Ui, state: &mut CivShareState) {
+fn zoom_controls(ui: &mut egui::Ui, state: &mut EmpirePorterState) {
     ui.label("Zoom: + / -");
     if ui
         .add(
@@ -303,9 +303,9 @@ fn tab_button(ui: &mut egui::Ui, active: &mut ActiveTab, tab: ActiveTab, label: 
     }
 }
 
-fn export_tab(ui: &mut egui::Ui, state: &mut CivShareState) {
+fn export_tab(ui: &mut egui::Ui, state: &mut EmpirePorterState) {
     ui.heading("Export full empire designs from Stellaris");
-    ui.add(egui::Label::new("Choose the empires you want to share; CivShare preserves the full Stellaris design exactly as the game saved it.").wrap());
+    ui.add(egui::Label::new("Choose the empires you want to share; EmpirePorter preserves the full Stellaris design exactly as the game saved it.").wrap());
     ui.separator();
 
     ui.horizontal(|ui| {
@@ -395,14 +395,14 @@ fn export_tab(ui: &mut egui::Ui, state: &mut CivShareState) {
     );
 }
 
-fn import_tab(ui: &mut egui::Ui, state: &mut CivShareState) {
+fn import_tab(ui: &mut egui::Ui, state: &mut EmpirePorterState) {
     ui.heading("Import selected empire/civ designs");
     ui.add(egui::Label::new("Open Stellaris civs to import, choose the designs you want, then choose the existing Stellaris file to import into.").wrap());
     ui.separator();
 
     ui.horizontal(|ui| {
         if ui.button("Open Stellaris Civs To Import").clicked() {
-            if let Some(path) = pick_civshare_export_file("Open Stellaris civs to import") {
+            if let Some(path) = pick_empire_porter_export_file("Open Stellaris civs to import") {
                 match load_empire_file(&path) {
                     Ok((_content, empires)) => {
                         let count = empires.len();
@@ -1040,9 +1040,9 @@ fn chip_ui(ui: &mut egui::Ui, chip: &SummaryChip, width: f32) {
         });
 }
 
-fn pick_civshare_export_file(title: &str) -> Option<PathBuf> {
+fn pick_empire_porter_export_file(title: &str) -> Option<PathBuf> {
     let mut dialog = text_file_dialog(title);
-    if let Some(default_path) = default_civshare_export_path() {
+    if let Some(default_path) = default_empire_porter_export_path() {
         dialog = apply_dialog_default_path(dialog, &default_path);
     }
 
@@ -1060,11 +1060,11 @@ fn pick_stellaris_designs_file(title: &str) -> Option<PathBuf> {
 
 fn save_bundle_file() -> Option<PathBuf> {
     let mut dialog = rfd::FileDialog::new()
-        .set_title("Save CivShare export bundle")
-        .set_file_name(CIVSHARE_EXPORT_FILE_NAME)
+        .set_title("Save EmpirePorter export bundle")
+        .set_file_name(EMPIRE_PORTER_EXPORT_FILE_NAME)
         .add_filter("Text files", &["txt"]);
 
-    if let Some(default_path) = default_civshare_export_path() {
+    if let Some(default_path) = default_empire_porter_export_path() {
         dialog = apply_dialog_default_path(dialog, &default_path);
     }
 
@@ -1074,10 +1074,10 @@ fn save_bundle_file() -> Option<PathBuf> {
 fn save_preview_file(_empire_name: &str) -> Option<PathBuf> {
     let mut dialog = rfd::FileDialog::new()
         .set_title("Save preview text")
-        .set_file_name(CIVSHARE_EXPORT_FILE_NAME)
+        .set_file_name(EMPIRE_PORTER_EXPORT_FILE_NAME)
         .add_filter("Text files", &["txt"]);
 
-    if let Some(default_path) = default_civshare_export_path() {
+    if let Some(default_path) = default_empire_porter_export_path() {
         dialog = apply_dialog_default_path(dialog, &default_path);
     }
 
@@ -1126,10 +1126,10 @@ fn default_stellaris_designs_path() -> Option<PathBuf> {
     Some(path)
 }
 
-fn default_civshare_export_path() -> Option<PathBuf> {
+fn default_empire_porter_export_path() -> Option<PathBuf> {
     let mut path = PathBuf::from(env::var_os("USERPROFILE")?);
     path.push("Downloads");
-    path.push(CIVSHARE_EXPORT_FILE_NAME);
+    path.push(EMPIRE_PORTER_EXPORT_FILE_NAME);
 
     Some(path)
 }

@@ -1,7 +1,21 @@
+# SPDX-License-Identifier: GPL-3.0-only
+#
+# Copyright (C) 2026 Alex Hurshman
+#
+# This file is part of EmpirePorter.
+#
+# EmpirePorter is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation, version 3 only.
+#
+# EmpirePorter is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
 import re
 import os.path
 
-pattern = re.compile("\"([a-zA-Z0-9\\s]+)\"\=")
+pattern = re.compile(r'"([a-zA-Z0-9\s]+)"=')
 civFilePath = ""
 civs = dict()
 civNum = 0
