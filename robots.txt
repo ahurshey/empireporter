@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ahurshey.github.io/empireporter/sitemap.xml

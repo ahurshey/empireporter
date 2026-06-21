@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EmpirePorter — Stellaris Empire Import &amp; Export Tool</title>
+  <meta name="description" content="EmpirePorter is a free, open-source Windows desktop tool for importing and exporting Stellaris empire designs. Share empire builds, merge designs, and back up your user_empire_designs file safely." />
+  <link rel="canonical" href="https://ahurshey.github.io/empireporter/" />
+  <meta name="theme-color" content="#0b0e1a" />
+
+  <!-- Open Graph / social cards -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="EmpirePorter" />
+  <meta property="og:title" content="EmpirePorter — Stellaris Empire Import & Export Tool" />
+  <meta property="og:description" content="Free, open-source Windows tool for importing and exporting Stellaris empire designs. Share and merge empire builds safely." />
+  <meta property="og:url" content="https://ahurshey.github.io/empireporter/" />
+  <meta property="og:image" content="https://ahurshey.github.io/empireporter/assets/app_icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="EmpirePorter — Stellaris Empire Import & Export Tool" />
+  <meta name="twitter:description" content="Free, open-source Windows tool for importing and exporting Stellaris empire designs." />
+  <meta name="twitter:image" content="https://ahurshey.github.io/empireporter/assets/app_icon.png" />
+
+  <!-- lightweight inline favicon (avoids downloading the 2 MB app icon) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='28' fill='%237c5cff'/%3E%3Cellipse cx='50' cy='50' rx='46' ry='13' fill='none' stroke='%2300d4ff' stroke-width='5' transform='rotate(-20 50 50)'/%3E%3C/svg%3E" />
+
+  <!-- Structured data: helps Google understand what this page is -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "EmpirePorter",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Windows",
+    "softwareVersion": "0.1.0",
+    "description": "A Windows desktop tool for importing and exporting Stellaris empire designs.",
+    "url": "https://ahurshey.github.io/empireporter/",
+    "downloadUrl": "https://github.com/ahurshey/empireporter",
+    "license": "https://www.gnu.org/licenses/gpl-3.0.html",
+    "author": { "@type": "Person", "name": "Alex Hurshman" },
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #0b0e1a;
+      --bg-2: #11152a;
+      --card: #161b33;
+      --line: #262c4d;
+      --text: #e7eaf6;
+      --muted: #9aa3c7;
+      --accent: #7c5cff;
+      --accent-2: #00d4ff;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 80% -10%, rgba(124,92,255,.18), transparent 60%),
+        radial-gradient(900px 500px at -10% 10%, rgba(0,212,255,.12), transparent 55%),
+        var(--bg);
+      line-height: 1.6;
+    }
+    a { color: var(--accent-2); }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+    header { padding: 72px 0 40px; text-align: center; }
+    .logo { width: 96px; height: 96px; border-radius: 22px; box-shadow: 0 10px 40px rgba(124,92,255,.35); }
+    h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); margin: 20px 0 6px; letter-spacing: -0.02em; }
+    .tagline { font-size: clamp(1.05rem, 2.5vw, 1.3rem); color: var(--muted); margin: 0 auto; max-width: 640px; }
+    .badge {
+      display: inline-block; margin-top: 18px; padding: 4px 12px; border-radius: 999px;
+      font-size: .85rem; color: var(--accent-2); border: 1px solid var(--line); background: rgba(0,212,255,.06);
+    }
+
+    .cta { margin-top: 28px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 12px;
+      font-weight: 600; text-decoration: none; transition: transform .12s ease, box-shadow .12s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), #5a3df0); color: #fff; box-shadow: 0 8px 24px rgba(124,92,255,.4); }
+    .btn-ghost { background: var(--card); color: var(--text); border: 1px solid var(--line); }
+
+    section { padding: 30px 0; }
+    h2 { font-size: 1.5rem; margin: 0 0 18px; letter-spacing: -0.01em; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    .card {
+      background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px;
+    }
+    .card h3 { margin: 0 0 8px; font-size: 1.05rem; }
+    .card p { margin: 0; color: var(--muted); font-size: .95rem; }
+
+    .steps { counter-reset: step; list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+    .steps li {
+      position: relative; background: var(--bg-2); border: 1px solid var(--line); border-radius: 12px;
+      padding: 14px 16px 14px 56px; color: var(--text);
+    }
+    .steps li::before {
+      counter-increment: step; content: counter(step);
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #06081a; font-weight: 700; font-size: .9rem;
+    }
+
+    pre {
+      background: #0a0c18; border: 1px solid var(--line); border-radius: 12px; padding: 16px;
+      overflow-x: auto; font-size: .9rem;
+    }
+    code { font-family: "SF Mono", "Consolas", "Liberation Mono", monospace; color: #c8d0ff; }
+    .muted { color: var(--muted); }
+    .path { font-family: "SF Mono", "Consolas", monospace; font-size: .85rem; color: var(--accent-2); word-break: break-all; }
+
+    footer { border-top: 1px solid var(--line); margin-top: 30px; padding: 30px 0 60px; color: var(--muted); font-size: .9rem; }
+    footer p { margin: 6px 0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <img class="logo" src="assets/app_icon.png" alt="EmpirePorter logo" width="96" height="96" />
+      <h1>EmpirePorter</h1>
+      <p class="tagline">A Windows desktop tool for importing and exporting <strong>Stellaris</strong> empire designs — share builds, merge designs, and back up your empire file safely.</p>
+      <span class="badge">Current release · v0.1.0 · Windows</span>
+      <div class="cta">
+        <a class="btn btn-primary" href="https://github.com/ahurshey/empireporter">View on GitHub</a>
+        <a class="btn btn-ghost" href="https://github.com/ahurshey/empireporter/releases">Releases</a>
+      </div>
+    </header>
+
+    <section id="about">
+      <h2>What it does</h2>
+      <p class="muted">EmpirePorter reads Stellaris <span class="path">user_empire_designs_v3.4.txt</span> files, lets you select full empire design blocks, previews the raw output, and writes cleanly formatted import/export files — with automatic backups so you never lose a build.</p>
+    </section>
+
+    <section id="features">
+      <h2>Features</h2>
+      <div class="grid">
+        <div class="card"><h3>Export designs</h3><p>Export one or more full Stellaris empire designs to a shareable text file.</p></div>
+        <div class="card"><h3>Import designs</h3><p>Import selected empire designs into an existing Stellaris user empire file.</p></div>
+        <div class="card"><h3>Conflict handling</h3><p>Choose how duplicate empires are handled: skip, replace, or append.</p></div>
+        <div class="card"><h3>Safety first</h3><p>Automatic backups, temporary writes, and parse validation before any file is replaced.</p></div>
+        <div class="card"><h3>Clean output</h3><p>Normalized files with proper CRLF line endings and blank lines between empire blocks.</p></div>
+        <div class="card"><h3>4K-friendly UI</h3><p>Zoom controls and a resizable preview split for high-resolution displays.</p></div>
+      </div>
+    </section>
+
+    <section id="usage">
+      <h2>How to use it</h2>
+      <ol class="steps">
+        <li>Launch <code>empire-porter.exe</code>.</li>
+        <li>Use the <strong>Export</strong> tab to open a Stellaris empire file, select empires, and save a shareable export.</li>
+        <li>Use the <strong>Import</strong> tab to open an EmpirePorter export and import selected empires into your Stellaris target file.</li>
+        <li>Pick a conflict policy before importing if the target already contains matching empires.</li>
+      </ol>
+      <p class="muted" style="margin-top:16px">Default paths:</p>
+      <p class="path">Export → %USERPROFILE%\Downloads\empire_porter_export.txt</p>
+      <p class="path">Target → %USERPROFILE%\Documents\Paradox Interactive\Stellaris\user_empire_designs_v3.4.txt</p>
+    </section>
+
+    <section id="build">
+      <h2>Build from source</h2>
+      <p class="muted">Install <a href="https://www.rust-lang.org/tools/install">Rust</a>, then from the repository root:</p>
+      <pre><code>cargo build --release</code></pre>
+      <p class="muted">The optimized executable is written to <span class="path">target\release\empire-porter.exe</span>.</p>
+    </section>
+
+    <footer>
+      <p>© 2026 Alex Hurshman. EmpirePorter is licensed under the <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License v3.0</a>.</p>
+      <p>Provided without warranty of any kind, including the implied warranties of merchantability or fitness for a particular purpose.</p>
+      <p><em>EmpirePorter is an unofficial tool and is not affiliated with Paradox Interactive or Stellaris.</em></p>
+    </footer>
+  </div>
+</body>
+</html>
